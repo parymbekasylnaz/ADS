@@ -1,153 +1,164 @@
-#task1
-def task1(n):
-    if n == 0:
-        return
-    task1(n-1)
-    print(n, end=" ")
-print(task1(5))
-
-#task2
-def task2(n):
-    if n == 0:
-        return
-    print(n, end=" ")
-    task2(n-1)
-
-print(task2(5))
-
-#task3
-def task3(n):
-    if n == 1:
-        return 1
-    return n + task3(n - 1)
-
-print(task3(5))
-
-#task4
-def task4(n):
-    if n <= 1:
-        return 1
-    return n * task4(n - 1)
-
-print(task4(5))
-
-#task5
-def task5(a, b):
-    if b == 0:
-        return 1
-    return a * task5(a, b - 1)
-
-print(task5(2, 4))
-
-#task6
-def task6(n):
-    if n == 0:
-        return 0
-    return (n % 10) + task6(n // 10)
-
-print(task6(572))
-
-#task7
-def task7(n):
-    if n == 0:
-        return 0
-    return 1 + task7(n // 10)
-
-print(task7(5729))
-
-#task8
-def task8(n):
-    if n == 0:
-        return
-    print(n % 10, end="")
-    task8(n // 10)
-
-task8(1234)
-print()
-
-#task9
-def task9(n):
-    if n <= 1:
-        return n
-    return task9(n - 1) + task9(n - 2)
-
-print(task9(6))
-
-#task10
-def task10(s):
-    if len(s) <= 1:
-        return "Palindrome"
-    if s[0] != s[-1]:
-        return "Not palindrome"
-    return task10(s[1:-1])
-
-print(task10("level"))
-print(task10("hello"))
-
-#task11
-def task11(arr):
-    if not arr:
-        return 0
-    return arr[0] + task11(arr[1:])
-
-print(task11([3, 5, 2, 7]))
-
-#task12
-def task12(arr):
-    if len(arr) == 1:
-        return arr[0]
-    m = task12(arr[1:])
-    return arr[0] if arr[0] > m else m
-
-print(task12([4, 9, 1, 7, 3]))
-
-#task13
-def task13(arr, target):
-    if not arr:
-        return 0
-    c = 1 if arr[0] == target else 0
-    return c + task13(arr[1:], target)
-
-print(task13([1, 2, 3, 2, 2, 5], 2))
-
-#task14
-def task14(arr, target):
-    if not arr:
-        return "Not Found"
-    if arr[0] == target:
-        return "Found"
-    return task14(arr[1:], target)
-
-print(task14([4, 7, 1, 9, 3], 9))
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
 
 
-# task15
-def task15(arr):
-    if len(arr) <= 1:
-        return "Sorted"
-    if arr[0] > arr[1]:
-        return "Not sorted"
-    return task15(arr[1:])
+# Task 1
+def prepend(head, value):
+    new_node = Node(value)
+    new_node.next = head
+    return new_node
 
 
-print(task15([1, 2, 4, 7, 9]))
-print(task15([1, 5, 3, 8]))
+# Task 2
+def append(head, value):
+    new_node = Node(value)
+    if head is None:
+        return new_node
+    current = head
+    while current.next:
+        current = current.next
+    current.next = new_node
+    return head
 
 
-# task16
-def task16(arr, target, low, high):
-    if low > high:
-        return "Element not found"
-
-    mid = (low + high) // 2
-
-    if arr[mid] == target:
-        return f"Element found at index {mid}"
-    elif arr[mid] > target:
-        return task16(arr, target, low, mid - 1)
-    else:
-        return task16(arr, target, mid + 1, high)
+# Task 3
+def remove_last(head):
+    if head is None:
+        return None
+    if head.next is None:
+        return None
+    current = head
+    while current.next.next:
+        current = current.next
+    current.next = None
+    return head
 
 
-arr16 = [1, 3, 5, 7, 9, 11]
-print(task16(arr16, 7, 0, len(arr16) - 1))
+# Task 4
+def print_list(head):
+    elements = []
+    current = head
+    while current:
+        elements.append(str(current.data))
+        current = current.next
+    print(" -> ".join(elements) + " -> null")
+
+
+# Task 5
+def search(head, target):
+    current = head
+    index = 0
+    while current:
+        if current.data == target:
+            return index
+        current = current.next
+        index += 1
+    return -1
+
+
+# Task 6
+def insert_at(head, value, position):
+    new_node = Node(value)
+    if position == 0:
+        new_node.next = head
+        return new_node
+    current = head
+    for _ in range(position - 1):
+        if current is None:
+            raise IndexError("Position out of range")
+        current = current.next
+    new_node.next = current.next
+    current.next = new_node
+    return head
+
+
+# Task 7
+def remove_value(head, target):
+    if head is None:
+        return None
+    if head.data == target:
+        return head.next
+    prev = head
+    current = head.next
+    while current:
+        if current.data == target:
+            prev.next = current.next
+            return head
+        prev = current
+        current = current.next
+    return head
+
+
+# Task 8
+def merge(head1, head2):
+    if head1 is None:
+        return head2
+    if head2 is None:
+        return head1
+    current = head1
+    while current.next:
+        current = current.next
+    current.next = head2
+    return head1
+
+# Task 9
+def reverse(head):
+    prev = None
+    current = head
+    while current:
+        next_node = current.next
+        current.next = prev
+        prev = current
+        current = next_node
+    return prev
+
+
+head = None
+head = append(head, 1)
+head = append(head, 2)
+head = append(head, 3)
+head = append(head, 4)
+head = append(head, 5)
+
+print("Исходный список:")
+print_list(head)
+
+print("Task 1 - prepend(0):")
+head = prepend(head, 0)
+print_list(head)
+
+print("Task 2 - append(6):")
+head = append(head, 6)
+print_list(head)
+
+print("Task 3 - remove_last:")
+head = remove_last(head)
+print_list(head)
+
+print("Task 4 - print_list:")
+print_list(head)
+
+print("Task 5 - search(3):")
+print(search(head, 3))
+
+print("Task 6 - insert_at(10, position=2):")
+head = insert_at(head, 10, 2)
+print_list(head)
+
+print("Task 7 - remove_value(10):")
+head = remove_value(head, 10)
+print_list(head)
+
+print("Task 8 - merge с [7, 8, 9]:")
+head2 = None
+head2 = append(head2, 7)
+head2 = append(head2, 8)
+head2 = append(head2, 9)
+head = merge(head, head2)
+print_list(head)
+
+print("Task 9 - reverse:")
+head = reverse(head)
+print_list(head)
